@@ -49,7 +49,13 @@ export class PentestClient {
 
         // Extract text content from result
         // @ts-ignore
-        const textContent = result?.content.filter(c => c.type === 'text').map(c => c.text).join("\n");
+        const textContent = result?.content?.reduce((acc: string | null, c: any) => {
+            if (c.type === 'text') {
+                return acc === null ? c.text : acc + "\n" + c.text;
+            }
+            return acc;
+        }, null);
+
         return textContent || "No text output";
     }
 
